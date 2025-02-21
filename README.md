@@ -33,8 +33,8 @@ make
 Si estás en un sistema x86_64, debes compilar en modo 32 bits:
 
 ```sh
-gcc -m32 poker_llamadas.c -o poker_llamadas_x86
-./poker_llamadas_x86
+gcc -m32 poker_llamadas.c -o poker_llamadas_32
+./poker_llamadas_32
 ```
 
 Si el sistema no tiene soporte para binarios de 32 bits, instala las bibliotecas necesarias (ubuntu/debian):
@@ -55,14 +55,16 @@ gcc poker_llamadas.c -o poker_llamadas
 
 ## Ejecución y análisis de poker_llamadas y poker_llamadas_32
 
-Comprueba la salida del programa, deberían verse 4 mensajes que usan la escritura en fichero (salida estándar), pero con diferentes métodos:
+Comprueba la salida de ambos programas (si no tienes x86_64 puede que sólo tengas un ejecutable), deberían verse 4 mensajes que usan la escritura en fichero (salida estándar), pero con diferentes métodos:
   - `printf()` de la biblioteca estándar de C.
   - `write()` de `unistd.h`, un envoltorio de la librería de C para la llamada al sistema write().
   - `syscall(SYS_write, ...)`. La forma genérica de invocar a cualquier llamada al sistema.
   - Por último llamadas directas en ensamblador, con la versión adecuada para la arquitectura en uso:
     - `int 0x80` en **x86 (32 bits)**.
     - `syscall` en **x86_64 (64 bits)**.
-    - `svc 0` en **ARM**.
+    - `svc 0` en **ARM** , probado en Rpi 2.
+    - con otra arquitectura (apple silicon) no hay implementación preparada
+Comprueba si se ejectutan correctamente las cuatro opciones, revisa el código fuente para comprobar que llamadas se realizaron en casa caso.
 
 ## Funciones utilizadas
 
@@ -102,6 +104,9 @@ Esto mostrará cada syscall ejecutada y permitirá comparar las diferencias entr
 - usar las funciones de librería de C en espacio de usuario que incorpora optimizaciones que permiten reducir el número de llamadas al sistema.
 - usar directamente llamadas al sistema.
 Las llamadas al sistema que nos interesan están en la última docena de líneas, después de la última llamada a brk(). Ahí es donde empieza la ejecución de main(). Antes de eso hay llamadas al sistema previas que preparan y configuran la ejecución del programa, por ejemplo, añadiendo las librerías dinámicas necesarias.
+
+### Interpretar salida de strace
+Por ejemplo la línea `write(1, "Salida write con syscall desde a"..., 35) = 35` indica que se ha llamado a la syscall write, para escribir en el fichero 1 (salida estándar) 35 bytes del buffer indicando. La respuesta de la llamada es 35, que indica que se pudieron escribir efectivamente 35 bytes. Se puede consultar el uso de write con `man 2 write`.
 
 ## Buffering en `E_S_fichero.c`
 
