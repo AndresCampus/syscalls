@@ -3,7 +3,7 @@ SRC_PLL = poker_llamadas.c
 OUT_PLL = $(basename $(SRC_PLL))
 SRC_ES = E_S_fichero.c
 OUT_ES = $(basename $(SRC_ES))
-PROGS = poker_llamadas_32 poker_llamadas_64 E_S_fichero
+PROGS = $(OUT_PLL)_32 $(OUT_PLL)_64 $(OUT_ES) 
 
 # Verificación de bibliotecas necesarias
 CHECK_LIB32 = dpkg-query -W -f='${Status}' libc6-dev-i386 2>/dev/null | grep -c "ok installed"
