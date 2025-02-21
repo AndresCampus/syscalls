@@ -100,9 +100,9 @@ Para ver las llamadas al sistema en tiempo real, puedes ejecutar el programa con
 strace ./E_S_fichero
 ```
 
-Esto mostrará cada syscall ejecutada y permitirá comparar las diferencias entre:
+Esto mostrará cada llamada al sistema ejecutada y permitirá comparar las diferencias entre:
 - usar las funciones de librería de C en espacio de usuario que incorpora optimizaciones que permiten reducir el número de llamadas al sistema.
-- usar directamente llamadas al sistema.
+- usar directamente llamadas al sistema sin ninguna librería de alto nivel.
 Las llamadas al sistema que nos interesan están en la última docena de líneas, después de la última llamada a brk(). Ahí es donde empieza la ejecución de main(). Antes de eso hay llamadas al sistema previas que preparan y configuran la ejecución del programa, por ejemplo, añadiendo las librerías dinámicas necesarias.
 
 ### Interpretar salida de strace, un par de ejemplos:
