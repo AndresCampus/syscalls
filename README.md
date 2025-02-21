@@ -1,6 +1,6 @@
 # Syscalls en Linux - Diferentes Métodos para Llamar al Sistema
 
-Este repositorio contiene ejemplos de cómo realizar llamadas al sistema en Linux utilizando diferentes métodos en distintas arquitecturas. Permite comparar el uso de `printf()`, `write()`, `syscall()`, `int 0x80`, `syscall` y `svc` en ARM.
+Este repositorio contiene ejemplos de cómo realizar llamadas al sistema en Linux utilizando diferentes métodos en distintas arquitecturas. Permite comparar el uso desde C de `printf()`, `write()`, `syscall()` y ensamblador en C con las instrucciones `int 0x80`, `syscall` para x86 y `svc` para ARM.
 
 ## Contenido
 
