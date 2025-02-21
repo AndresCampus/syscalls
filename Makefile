@@ -6,8 +6,11 @@ OUT_ES = $(basename $(SRC_ES))
 PROGS = $(OUT_PLL)_32 $(OUT_PLL)_64 $(OUT_ES) 
 
 # Verificación de bibliotecas necesarias
-CHECK_LIB32 = dpkg-query -W -f='${Status}' libc6-dev-i386 | grep -c "ok installed"
+# Definimos el nombre del paquete que queremos comprobar
+PACKAGE = libc6-dev-i386
 
+# Comprobamos si el paquete está instalado
+CHECK_PACKAGE = $(shell dpkg-query -W -f='$${Status}' $(PACKAGE) 2>/dev/null | grep -c 'ok installed')
 # Compilador y flags
 CC = gcc
 
@@ -18,11 +21,15 @@ all: check_libs $(PROGS)
 # Verifica e instala dependencias si es necesario
 check_libs:
 	@echo "🔍 Verificando dependencias..."
-	@if [ `$(CHECK_LIB32)` -eq 0 ]; then \
-		echo "⚠️  Falta libc6-dev-i386, instalando..."; \
-		sudo apt update && sudo apt install -y libc6-dev-i386 gcc-multilib; \
-	fi
-	@echo "✅ Todas las dependencias están instaladas."
+ifeq ($(CHECK_PACKAGE), 0)
+        @echo "❌ El paquete $(PACKAGE) no está instalado."
+		sudo apt update && sudo apt install -y libc6-dev-i386 gcc-multilib
+else
+        @echo "✅ El paquete $(PACKAGE) está instalado."
+        
+endif
+
+	@echo "✅ Todas las dependencias deberían estar instaladas."
 
 # Compilar en 64 bits
 $(OUT_PLL)_64 : $(SRC_PLL)
