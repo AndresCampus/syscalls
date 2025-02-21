@@ -61,8 +61,8 @@ Comprueba la salida del programa, deberían verse 4 mensajes que usan la escritu
 gcc E_S_fichero.c -o E_S_fichero
 ```
 
-Es posible compilar los dos fuentes usando la herramienta make y el fichero Makefile proporcionado:
 ### **Compilar con make**
+Es posible compilar los dos fuentes usando la herramienta make y el fichero Makefile proporcionado:
 
 ```sh
 make
