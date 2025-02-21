@@ -20,7 +20,7 @@ Este repositorio contiene ejemplos de cómo realizar llamadas al sistema en Linu
   - Lee datos usando `fread()` y luego usa `read()` de `unistd.h`.
   - Permite analizar cómo el buffering en espacio del usuario afecta el número de llamadas al sistema usando `strace`.
 
-## Compilación y Ejecución
+## Compilación
 
 ### **Compilar con make**
 Es posible compilar los dos fuentes usando la herramienta make y el fichero Makefile proporcionado:
@@ -28,13 +28,25 @@ Es posible compilar los dos fuentes usando la herramienta make y el fichero Make
 ```sh
 make
 ```
+Si lo prefieres puedes compilar cada programa manualmente con gcc:
+
+### **Compilar `E_S_fichero.c`**
+
+```sh
+gcc E_S_fichero.c -o E_S_fichero
+```
+
+### **Compilar en x86_64** (para probar el método `syscall` para llamar al sistema en 64 bits)
+
+```sh
+gcc poker_llamadas.c -o poker_llamadas
+```
 
 ### **Compilar en x86 de 32 bits** (para probar `int 0x80` o `sysenter` como método de hacer una syscall)
 Si estás en un sistema x86_64, debes compilar en modo 32 bits:
 
 ```sh
 gcc -m32 poker_llamadas.c -o poker_llamadas_32
-./poker_llamadas_32
 ```
 
 Si el sistema no tiene soporte para binarios de 32 bits, instala las bibliotecas necesarias (ubuntu/debian):
@@ -43,14 +55,6 @@ Si el sistema no tiene soporte para binarios de 32 bits, instala las bibliotecas
 sudo apt update
 sudo apt install gcc-multilib libc6-dev-i386
 gcc -m32 poker_llamadas.c -o poker_llamadas_32
-./poker_llamadas_32
-```
-
-### **Compilar en x86_64** (para probar el método `syscall` para llamar al sistema en 64 bits)
-
-```sh
-gcc poker_llamadas.c -o poker_llamadas
-./poker_llamadas
 ```
 
 ## Ejecución y análisis de poker_llamadas y poker_llamadas_32
@@ -64,7 +68,9 @@ Comprueba la salida de ambos programas (si no tienes x86_64 puede que sólo teng
     - `syscall` en **x86_64 (64 bits)**.
     - `svc 0` en **ARM** , probado en Rpi 2.
     - con otra arquitectura (apple silicon) no hay implementación preparada
+
 Comprueba si se ejectutan correctamente las cuatro opciones, revisa el código fuente para comprobar que llamadas se realizaron en casa caso.
+Ejecuta los programas ahora con strace para comprobar si se llama 
 
 ## Funciones utilizadas
 
@@ -87,12 +93,6 @@ Usa `syscall()` para hacer una llamada explícita sin depender de la glibc.
 - **ARM**: Usa `svc 0`, supervisor call: una interrupción, la instrucción equivalente para syscalls en arquitecturas ARM.
 
 ## Ejecución y análisis con `strace` de `E_S_fichero`
-
-### **Compilar `E_S_fichero.c`**
-
-```sh
-gcc E_S_fichero.c -o E_S_fichero
-```
 
 Para ver las llamadas al sistema en tiempo real, puedes ejecutar el programa con `strace`, esto nos permite analizar las diferencias en el uso del buffering con `E_S_fichero.c`:
 
