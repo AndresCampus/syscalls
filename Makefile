@@ -39,14 +39,14 @@ endif
 
 # Compilar en 64 bits
 $(OUT_PLL) : $(SRC_PLL)
-	@echo "⚙️  Compilando..."
+	@echo "⚙️  Compilando  $<"
 	$(CC) -o $@ $<  
 	@echo "✅ Compilado: $@"
 
 # Compilar en 32 bits
 $(OUT_PLL)_32 : $(SRC_PLL)
 ifeq ($(ARCH), x86_64)
-	@echo "⚙️  Forzando compilación en 32 bits..."
+	@echo "⚙️  Forzando compilación en 32 bits $< ..."
 	$(CC) -m32 -o $@ $<  
 	@echo "✅ Compilado: $@"
 else
@@ -55,7 +55,7 @@ endif
 
 # Compilar E_S_fichero.c
 $(OUT_ES) : $(SRC_ES)
-	@echo "⚙️  Compilando " $(SRC_ES)
+	@echo "⚙️  Compilando  $<" 
 	$(CC) -o $@ $<  
 	@echo "✅ Compilado: $@"
 
