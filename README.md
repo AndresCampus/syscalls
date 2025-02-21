@@ -61,6 +61,14 @@ Comprueba la salida del programa, deberían verse 4 mensajes que usan la escritu
 gcc E_S_fichero.c -o E_S_fichero
 ```
 
+Es posible compilar los dos fuentes usando la herramienta make y el fichero Makefile proporcionado:
+### **Compilar con make**
+
+```sh
+make
+```
+
+
 ## Ejecución y análisis con `strace`
 
 Para ver las llamadas al sistema en tiempo real, puedes ejecutar el programa con `strace`, analiza las diferencias en el uso del buffering con `E_S_fichero.c`:
