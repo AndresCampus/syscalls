@@ -71,15 +71,15 @@ strace ./E_S_fichero
 
 Esto mostrará cada syscall ejecutada y permitirá comparar las diferencias entre los métodos. Las llamadas al sistema que nos interesan están en la última docena de líneas, después de la última llamada a brk(). Ahí es donde empieza la ejecución de mai(). Antes de eso hay llamadas al sistema previas que preparan y configuran la ejecución del programa añadiendo las librerías dinámicas necesarias.
 
-## Explicación de los Métodos
+## Funciones utilizadas
 
 ### **1. `printf()` (Librería estándar de C)**
 
-Utiliza buffering y optimizaciones internas de la glibc antes de llamar a `write()`.
+Utiliza buffering y optimizaciones internas de la glibc antes de llamar a `write()`. Escribe en el fichero 1 (stdout) que se corresponde con la salida estándar, conectado con la consola por defecto.
 
 ### **2. `write()` (Envoltorio de `unistd.h`)**
 
-Llama directamente a la syscall `write()` mediante la función de la glibc.
+Llama directamente a la syscall `write()` mediante la función envoltorio de la glibc.
 
 ### **3. `syscall(SYS_write, ...)` (Llamada manual a `write`)**
 
@@ -89,14 +89,14 @@ Usa `syscall()` para hacer una llamada explícita sin depender de la glibc.
 
 - **x86_64**: Usa `syscall`, el método más eficiente en sistemas modernos de 64 bits.
 - **x86 (32 bits)**: Usa `int 0x80`, el método clásico para syscalls en Linux de 32 bits.
-- **ARM**: Usa `svc 0`, la instrucción equivalente para syscalls en arquitecturas ARM.
+- **ARM**: Usa `svc 0`, supervisor call: una interrupción, la instrucción equivalente para syscalls en arquitecturas ARM.
 
 ### **5. Buffering en `E_S_fichero.c`**
 
-- `fwrite()` usa buffering interno y puede retrasar la escritura hasta que el buffer esté lleno.
-- `read()` y `write()` de `unistd.h` son llamadas directas sin buffering adicional.
-- Usar `setvbuf()` permite modificar el comportamiento del buffer en `fwrite()`.
-- `strace` permite ver la diferencia en la cantidad de syscalls generadas.
+- `fwrite()` usa buffering interno en espacio de usuario y puede retrasar la escritura (llamada a la system call) hasta que el buffer esté lleno.
+- `read()` y `write()` de `unistd.h` son llamadas directas al kernel sin buffering adicional en espacio de usuario.
+- Usar `setvbuf()` permite modificar el comportamiento del buffer en `fwrite()` y `fread()`.
+- `strace` permite ver la diferencia en la cantidad de syscalls generadas y los tamaños de buffer de memoria que se están usando.
 
 ## Licencia
 
