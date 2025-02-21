@@ -105,8 +105,9 @@ Esto mostrará cada syscall ejecutada y permitirá comparar las diferencias entr
 - usar directamente llamadas al sistema.
 Las llamadas al sistema que nos interesan están en la última docena de líneas, después de la última llamada a brk(). Ahí es donde empieza la ejecución de main(). Antes de eso hay llamadas al sistema previas que preparan y configuran la ejecución del programa, por ejemplo, añadiendo las librerías dinámicas necesarias.
 
-### Interpretar salida de strace
-Por ejemplo la línea `write(1, "Salida write con syscall desde a"..., 35) = 35` indica que se ha llamado a la syscall write, para escribir en el fichero 1 (salida estándar) 35 bytes del buffer indicando. La respuesta de la llamada es 35, que indica que se pudieron escribir efectivamente 35 bytes. Se puede consultar el uso de write con `man 2 write`.
+### Interpretar salida de strace, un par de ejemplos:
+- `write(1, "Salida write con syscall desde a"..., 35) = 35` indica que se ha llamado a la syscall write, para escribir en el fichero 1 (salida estándar) 35 bytes del buffer indicando. La respuesta de la llamada es 35, que indica que se pudieron escribir efectivamente 35 bytes. Se puede consultar el uso de write con `man 2 write`.
+- `read(3, "Hola ", 1024) = 5` indica que se ha llamado a la syscall read, para leer el fichero 3 que debe haberse abierto previamente con open(). En este ejemplo se ha intentado leer 1024 bytes, pero sólo se leyeron 5. Eso puede ser debido a que se encontró el final de fichero (EOF) y ya no se pueden leer más datos. Se puede consultar el uso de read con `man 2 read`.
 
 ## Buffering en `E_S_fichero.c`
 
