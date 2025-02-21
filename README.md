@@ -7,8 +7,8 @@ Este repositorio contiene ejemplos de cómo realizar llamadas al sistema en Linu
 - **`poker_llamadas.c`**: Programa en C que muestra cuatro formas de invocar llamadas al sistema para escribir en la salida estándar.
 
   - `printf()` de la biblioteca estándar de C.
-  - `write()` de `unistd.h`.
-  - `syscall(SYS_write, ...)`.
+  - `write()` de `unistd.h`, el envoltorio de la syscall desde C.
+  - `syscall(SYS_write, ...)` es la forma genérica de llamar a una syscall desde C, hay que añadir el número de syscall que queremnos usar.
   - Llamadas directas en ensamblador:
     - `int 0x80` en **x86 (32 bits)**.
     - `syscall` en **x86_64 (64 bits)**.
