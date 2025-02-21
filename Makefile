@@ -43,22 +43,22 @@ $(OUT_PLL)_64 : $(SRC_PLL)
 ifeq ($(ARCH), x86_64)
 	@echo "⚙️  Compilando en 64 bits..."
 	$(CC) -o $@ $<  
-	@echo "✅ Compilado: $(OUT_64)"
+	@echo "✅ Compilado: $@"
 else
-	@echo "✅ La arquitectura no es x86_64, no se requiere compilar $(OUT_64)."
+	@echo "✅ La arquitectura no es x86_64, no se requiere compilar $@."
 endif
 
 # Compilar en 32 bits
 $(OUT_PLL)_32 : $(SRC_PLL)
 	@echo "⚙️  Compilando en 32 bits..."
 	$(CC) -m32 -o $@ $<  
-	@echo "✅ Compilado: $(OUT_32)"
+	@echo "✅ Compilado: $@"
 
 # Compilar E_S_fichero.c
 $(OUT_ES) : $(SRC_ES)
 	@echo "⚙️  Compilando " $(SRC_ES)
 	$(CC) -o $@ $<  
-	@echo "✅ Compilado: $(OUT_32)"
+	@echo "✅ Compilado: $@"
 
 
 # Limpieza
