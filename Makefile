@@ -25,10 +25,8 @@ ifeq ($(CHECK_PACKAGE), 0)
         @echo "❌ El paquete $(PACKAGE) no está instalado."
 		sudo apt update && sudo apt install -y libc6-dev-i386 gcc-multilib
 else
-        @echo "✅ El paquete $(PACKAGE) está instalado."
-        
+		@echo "✅ El paquete $(PACKAGE) está instalado."
 endif
-
 	@echo "✅ Todas las dependencias deberían estar instaladas."
 
 # Compilar en 64 bits
