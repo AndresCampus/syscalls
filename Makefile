@@ -6,7 +6,7 @@ OUT_ES = $(basename $(SRC_ES))
 PROGS = $(OUT_PLL)_32 $(OUT_PLL)_64 $(OUT_ES) 
 
 # Verificación de bibliotecas necesarias
-CHECK_LIB32 = dpkg-query -W -f='${Status}' libc6-dev-i386 2>/dev/null | grep -c "ok installed"
+CHECK_LIB32 = dpkg-query -W -f='${Status}' libc6-dev-i386 | grep -c "ok installed"
 
 # Compilador y flags
 CC = gcc
