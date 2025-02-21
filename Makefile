@@ -3,7 +3,7 @@ SRC_PLL = poker_llamadas.c
 OUT_PLL = $(basename $(SRC_PLL))
 SRC_ES = E_S_fichero.c
 OUT_ES = $(basename $(SRC_ES))
-PROGS = $(OUT_ES) $(OUT_PLL)_32 $(OUT_PLL)_64 
+PROGS = $(OUT_ES) $(OUT_PLL)_32 $(OUT_PLL)
 
 # Verificación de bibliotecas necesarias
 # Definimos el nombre del paquete que queremos comprobar
@@ -19,7 +19,7 @@ CC = gcc
 
 .PHONY: all clean       # estos no son ficheros
 
-all: $(OUT_ES) $(OUT_PLL)_32 check_libs $(OUT_PLL)_64 
+all: $(OUT_ES) $(OUT_PLL) check_libs  $(OUT_PLL)_32
 
 # Verifica e instala dependencias si es necesario
 check_libs:
@@ -38,21 +38,20 @@ else
 endif
 
 # Compilar en 64 bits
-$(OUT_PLL)_64 : $(SRC_PLL)
-	
-ifeq ($(ARCH), x86_64)
-	@echo "⚙️  Compilando en 64 bits..."
+$(OUT_PLL) : $(SRC_PLL)
+	@echo "⚙️  Compilando..."
 	$(CC) -o $@ $<  
+	@echo "✅ Compilado: $@"
+
+# Compilar en 32 bits
+$(OUT_PLL)_32 : $(SRC_PLL)
+ifeq ($(ARCH), x86_64)
+	@echo "⚙️  Forzando compilación en 32 bits..."
+	$(CC) -m32 -o $@ $<  
 	@echo "✅ Compilado: $@"
 else
 	@echo "✅ La arquitectura no es x86_64, no se requiere compilar $@."
 endif
-
-# Compilar en 32 bits
-$(OUT_PLL)_32 : $(SRC_PLL)
-	@echo "⚙️  Compilando en 32 bits..."
-	$(CC) -m32 -o $@ $<  
-	@echo "✅ Compilado: $@"
 
 # Compilar E_S_fichero.c
 $(OUT_ES) : $(SRC_ES)
