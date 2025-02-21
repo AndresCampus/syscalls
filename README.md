@@ -1,6 +1,6 @@
 # Syscalls en Linux - Diferentes Métodos para Llamar al Sistema
 
-Este repositorio contiene ejemplos de cómo realizar llamadas al sistema en Linux utilizando diferentes métodos en distintas arquitecturas. Permite comparar el uso de `printf()`, `write()`, `syscall()`, `int 0x80`, `sysenter`, `syscall`, y `svc` en ARM.
+Este repositorio contiene ejemplos de cómo realizar llamadas al sistema en Linux utilizando diferentes métodos en distintas arquitecturas. Permite comparar el uso de `printf()`, `write()`, `syscall()`, `int 0x80`, `syscall` y `svc` en ARM.
 
 ## Contenido
 
@@ -50,7 +50,7 @@ Comprueba la salida del programa, deberían verse 4 mensajes que usan la escritu
   - `printf()` de la biblioteca estándar de C.
   - `write()` de `unistd.h`, un envoltorio de la librería de C para la llamada al sistema write().
   - `syscall(SYS_write, ...)`. La forma genérica de invocar a cualquier llamada al sistema.
-  - Por último llamadas directas en ensamblador, con versiones para tres arquitecturas diferentes:
+  - Por último llamadas directas en ensamblador, con la versión adecuada para la arquitectura en uso:
     - `int 0x80` en **x86 (32 bits)**.
     - `syscall` en **x86_64 (64 bits)**.
     - `svc 0` en **ARM**.
@@ -59,24 +59,17 @@ Comprueba la salida del programa, deberían verse 4 mensajes que usan la escritu
 
 ```sh
 gcc E_S_fichero.c -o E_S_fichero
-./E_S_fichero
 ```
 
-## Análisis con `strace`
+## Ejecución y análisis con `strace`
 
-Para ver las llamadas al sistema en tiempo real, puedes ejecutar el programa con `strace`:
-
-```sh
-strace ./poker_llamadas_x86_64
-```
-
-Para analizar las diferencias en el uso del buffering con `E_S_fichero.c`:
+Para ver las llamadas al sistema en tiempo real, puedes ejecutar el programa con `strace`, analiza las diferencias en el uso del buffering con `E_S_fichero.c`:
 
 ```sh
 strace ./E_S_fichero
 ```
 
-Esto mostrará cada syscall ejecutada y permitirá comparar las diferencias entre los métodos.
+Esto mostrará cada syscall ejecutada y permitirá comparar las diferencias entre los métodos. Las llamadas al sistema que nos interesan están en la última docena de líneas, después de la última llamada a brk(). Ahí es donde empieza la ejecución de mai(). Antes de eso hay llamadas al sistema previas que preparan y configuran la ejecución del programa añadiendo las librerías dinámicas necesarias.
 
 ## Explicación de los Métodos
 
@@ -104,10 +97,6 @@ Usa `syscall()` para hacer una llamada explícita sin depender de la glibc.
 - `read()` y `write()` de `unistd.h` son llamadas directas sin buffering adicional.
 - Usar `setvbuf()` permite modificar el comportamiento del buffer en `fwrite()`.
 - `strace` permite ver la diferencia en la cantidad de syscalls generadas.
-
-## Contribuciones
-
-Si deseas agregar más ejemplos o mejorar el código, ¡eres bienvenido a contribuir!
 
 ## Licencia
 
