@@ -18,11 +18,18 @@ Este repositorio contiene ejemplos de cómo realizar llamadas al sistema en Linu
 
   - Escribe datos en un archivo usando `fwrite()`.
   - Lee datos usando `fread()` y luego usa `read()` de `unistd.h`.
-  - Permite analizar cómo el buffering en espacio del usuarioafecta el número de llamadas al sistema usando `strace`.
+  - Permite analizar cómo el buffering en espacio del usuario afecta el número de llamadas al sistema usando `strace`.
 
 ## Compilación y Ejecución
 
-### **Compilar en x86 de 32 bits** (para `int 0x80` y `sysenter`)
+### **Compilar con make**
+Es posible compilar los dos fuentes usando la herramienta make y el fichero Makefile proporcionado:
+
+```sh
+make
+```
+
+### **Compilar en x86 de 32 bits** (para probar `int 0x80` o `sysenter` como método de hacer una syscall)
 Si estás en un sistema x86_64, debes compilar en modo 32 bits:
 
 ```sh
@@ -35,16 +42,18 @@ Si el sistema no tiene soporte para binarios de 32 bits, instala las bibliotecas
 ```sh
 sudo apt update
 sudo apt install gcc-multilib libc6-dev-i386
-gcc -m32 poker_llamadas.c -o poker_llamadas_x86
-./poker_llamadas_x86
+gcc -m32 poker_llamadas.c -o poker_llamadas_32
+./poker_llamadas_32
 ```
 
-### **Compilar en x86_64** (para `syscall` en 64 bits)
+### **Compilar en x86_64** (para probar el método `syscall` para llamar al sistema en 64 bits)
 
 ```sh
-gcc poker_llamadas.c -o poker_llamadas_x86_64
-./poker_llamadas_x86_64
+gcc poker_llamadas.c -o poker_llamadas
+./poker_llamadas
 ```
+
+## Ejecución y análisis de poker_llamadas y poker_llamadas_32
 
 Comprueba la salida del programa, deberían verse 4 mensajes que usan la escritura en fichero (salida estándar), pero con diferentes métodos:
   - `printf()` de la biblioteca estándar de C.
@@ -54,30 +63,6 @@ Comprueba la salida del programa, deberían verse 4 mensajes que usan la escritu
     - `int 0x80` en **x86 (32 bits)**.
     - `syscall` en **x86_64 (64 bits)**.
     - `svc 0` en **ARM**.
-
-### **Compilar y ejecutar `E_S_fichero.c`**
-
-```sh
-gcc E_S_fichero.c -o E_S_fichero
-```
-
-### **Compilar con make**
-Es posible compilar los dos fuentes usando la herramienta make y el fichero Makefile proporcionado:
-
-```sh
-make
-```
-
-
-## Ejecución y análisis con `strace`
-
-Para ver las llamadas al sistema en tiempo real, puedes ejecutar el programa con `strace`, analiza las diferencias en el uso del buffering con `E_S_fichero.c`:
-
-```sh
-strace ./E_S_fichero
-```
-
-Esto mostrará cada syscall ejecutada y permitirá comparar las diferencias entre los métodos. Las llamadas al sistema que nos interesan están en la última docena de líneas, después de la última llamada a brk(). Ahí es donde empieza la ejecución de mai(). Antes de eso hay llamadas al sistema previas que preparan y configuran la ejecución del programa añadiendo las librerías dinámicas necesarias.
 
 ## Funciones utilizadas
 
@@ -99,7 +84,26 @@ Usa `syscall()` para hacer una llamada explícita sin depender de la glibc.
 - **x86 (32 bits)**: Usa `int 0x80`, el método clásico para syscalls en Linux de 32 bits.
 - **ARM**: Usa `svc 0`, supervisor call: una interrupción, la instrucción equivalente para syscalls en arquitecturas ARM.
 
-### **5. Buffering en `E_S_fichero.c`**
+## Ejecución y análisis con `strace` de `E_S_fichero`
+
+### **Compilar `E_S_fichero.c`**
+
+```sh
+gcc E_S_fichero.c -o E_S_fichero
+```
+
+Para ver las llamadas al sistema en tiempo real, puedes ejecutar el programa con `strace`, esto nos permite analizar las diferencias en el uso del buffering con `E_S_fichero.c`:
+
+```sh
+strace ./E_S_fichero
+```
+
+Esto mostrará cada syscall ejecutada y permitirá comparar las diferencias entre:
+- usar las funciones de librería de C en espacio de usuario que incorpora optimizaciones que permiten reducir el número de llamadas al sistema.
+- usar directamente llamadas al sistema.
+Las llamadas al sistema que nos interesan están en la última docena de líneas, después de la última llamada a brk(). Ahí es donde empieza la ejecución de main(). Antes de eso hay llamadas al sistema previas que preparan y configuran la ejecución del programa, por ejemplo, añadiendo las librerías dinámicas necesarias.
+
+## Buffering en `E_S_fichero.c`
 
 - `fwrite()` usa buffering interno en espacio de usuario y puede retrasar la escritura (llamada a la system call) hasta que el buffer esté lleno.
 - `read()` y `write()` de `unistd.h` son llamadas directas al kernel sin buffering adicional en espacio de usuario.
