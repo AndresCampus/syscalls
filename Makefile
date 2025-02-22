@@ -21,22 +21,6 @@ CC = gcc
 
 all: $(OUT_ES) $(OUT_PLL) $(OUT_PLL)_32
 
-# Verifica e instala dependencias si es necesario
-check_libs:
-	@echo "🔍 Verificando dependencias..."
-ifeq ($(ARCH), x86_64)
-	@echo "La arquitectura es x86_64, comprobando el paquete $(PACKAGE)..."
-ifeq ($(CHECK_PACKAGE), 0)
-	@echo "❌ El paquete $(PACKAGE) no está instalado."
-	sudo apt update && sudo apt install -y libc6-dev-i386 gcc-multilib
-else
-	@echo "✅ El paquete $(PACKAGE) está instalado."
-endif
-	@echo "✅ Todas las dependencias deberían estar instaladas."
-else
-	@echo "La arquitectura no es x86_64, no se requiere comprobar $(PACKAGE)."
-endif
-
 # Compilar en 64 bits
 $(OUT_PLL) : $(SRC_PLL)
 	@echo "⚙️  Compilando  $<"
@@ -46,7 +30,14 @@ $(OUT_PLL) : $(SRC_PLL)
 # Compilar en 32 bits
 $(OUT_PLL)_32 : $(SRC_PLL)
 ifeq ($(ARCH), x86_64)
-	$(MAKE) check_libs
+	@echo "La arquitectura es x86_64, 🔍 comprobando el paquete $(PACKAGE)..."
+ifeq ($(CHECK_PACKAGE), 0)
+	@echo "❌ El paquete $(PACKAGE) no está instalado."
+	sudo apt update && sudo apt install -y libc6-dev-i386 gcc-multilib
+else
+	@echo "✅ El paquete $(PACKAGE) está instalado."
+endif
+	@echo "✅ Todas las dependencias deberían estar instaladas."
 	@echo "⚙️  Forzando compilación en 32 bits $< ..."
 	$(CC) -m32 -o $@ $<  
 	@echo "✅ Compilado: $@"
