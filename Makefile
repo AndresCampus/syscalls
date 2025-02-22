@@ -19,7 +19,7 @@ CC = gcc
 
 .PHONY: all clean       # estos no son ficheros
 
-all: $(OUT_ES) $(OUT_PLL) check_libs  $(OUT_PLL)_32
+all: $(OUT_ES) $(OUT_PLL) $(OUT_PLL)_32
 
 # Verifica e instala dependencias si es necesario
 check_libs:
@@ -44,7 +44,7 @@ $(OUT_PLL) : $(SRC_PLL)
 	@echo "✅ Compilado: $@"
 
 # Compilar en 32 bits
-$(OUT_PLL)_32 : $(SRC_PLL)
+$(OUT_PLL)_32 : check_libs $(SRC_PLL)
 ifeq ($(ARCH), x86_64)
 	@echo "⚙️  Forzando compilación en 32 bits $< ..."
 	$(CC) -m32 -o $@ $<  
