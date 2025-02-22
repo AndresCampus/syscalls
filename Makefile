@@ -25,35 +25,35 @@ all: $(OUT_ES) $(OUT_PLL) $(OUT_PLL)_32
 $(OUT_PLL) : $(SRC_PLL)
 	@echo "⚙️  Compilando  $<"
 	$(CC) -o $@ $<  
-	@echo "✅ Compilado: $@"
+	@echo "✅  Compilado: $@"
 
 # Compilar en 32 bits
 $(OUT_PLL)_32 : $(SRC_PLL)
 ifeq ($(ARCH), x86_64)
-	@echo "La arquitectura es x86_64, 🔍 comprobando el paquete $(PACKAGE)..."
+	@echo "La arquitectura es x86_64, 🔍  comprobando el paquete $(PACKAGE)..."
 ifeq ($(CHECK_PACKAGE), 0)
-	@echo "❌ El paquete $(PACKAGE) no está instalado."
+	@echo "❌  El paquete $(PACKAGE) no está instalado."
 	sudo apt update && sudo apt install -y libc6-dev-i386 gcc-multilib
 else
-	@echo "✅ El paquete $(PACKAGE) está instalado."
+	@echo "✅  El paquete $(PACKAGE) está instalado."
 endif
-	@echo "✅ Todas las dependencias deberían estar instaladas."
+	@echo "✅  Todas las dependencias deberían estar instaladas."
 	@echo "⚙️  Forzando compilación en 32 bits $< ..."
 	$(CC) -m32 -o $@ $<  
-	@echo "✅ Compilado: $@"
+	@echo "✅  Compilado: $@"
 else
-	@echo "✅ La arquitectura no es x86_64, no se requiere compilar $@."
+	@echo "✅  La arquitectura no es x86_64, no se requiere compilar $@."
 endif
 
 # Compilar E_S_fichero.c
 $(OUT_ES) : $(SRC_ES)
 	@echo "⚙️  Compilando  $<" 
 	$(CC) -o $@ $<  
-	@echo "✅ Compilado: $@"
+	@echo "✅  Compilado: $@"
 
 
 # Limpieza
 clean:
-	@echo "🧹 Eliminando archivos compilados..."
+	@echo "🧹  Eliminando archivos compilados..."
 	rm -f $(PROGS)
-	@echo "✅ Limpieza completa."
+	@echo "✅  Limpieza completa."
