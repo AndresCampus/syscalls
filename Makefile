@@ -17,7 +17,7 @@ ARCH = $(shell uname -m)
 # Compilador y flags
 CC = gcc
 
-.PHONY: all clean       # estos no son ficheros
+.PHONY: all clean check_libs    # estos no son ficheros, sólo reglas
 
 all: $(OUT_ES) $(OUT_PLL) $(OUT_PLL)_32
 
