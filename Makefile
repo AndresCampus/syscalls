@@ -44,7 +44,7 @@ $(OUT_PLL) : $(SRC_PLL)
 	@echo "✅ Compilado: $@"
 
 # Compilar en 32 bits
-$(OUT_PLL)_32 : check_libs $(SRC_PLL)
+$(OUT_PLL)_32 : $(SRC_PLL) check_libs
 ifeq ($(ARCH), x86_64)
 	@echo "⚙️  Forzando compilación en 32 bits $< ..."
 	$(CC) -m32 -o $@ $<  
