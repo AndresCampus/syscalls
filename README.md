@@ -46,8 +46,10 @@ Comprueba la salida de ambos programas (si no tienes x86_64 puede que sólo teng
 Comprueba si se ejectutan correctamente las cuatro opciones, revisa el código fuente para comprobar que llamadas se realizaron en casa caso.
 Ejecuta los programas ahora con `strace` para comprobar si se llama a la llamada al sistema `write()` con las cuatro opciones (revisa la sección sobre strace al final del documento). Para ver mejor la salida de strace se puede ejecutar enviando la salida estándar a un fichero y así que no se mezclen en la consola:
 ```sh
+strace ./poker_llamadas
 strace ./poker_llamadas 1> salida.txt
 ```
+¿Por qué podría haber alguna diferencia entre la salida que da ./poker_llamadas por consola y la que se obtiene si se redirige esta salida a un fichero?
 
 ### Funciones utilizadas
 
