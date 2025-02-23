@@ -7,19 +7,14 @@
 #include <sys/syscall.h>   /* For SYS_xxx definitions */
 #include <sys/utsname.h>
 
-int main() {
-    struct utsname buf;
-    if (uname(&buf) == 0) {
-        printf("Arquitectura: %s\n", buf.machine);
-
 int main()
 {
 int res;
 char * mensaje1="Salida write con int 80h desde asm\n";  /* tamaño 35 caracteres */
 char * mensaje2="Salida write con SWI/SVC desde asm\n";  /* tamaño 35 caracteres */
 char * mensaje3="Salida write con syscall desde asm\n";  /* tamaño 35 caracteres */
-
 struct utsname buf;
+
 uname(&buf);
     
 /*Pinta por pantalla usando la librería de C stdio.h*/
