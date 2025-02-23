@@ -14,7 +14,7 @@ Este repositorio contiene ejemplos de cómo realizar llamadas al sistema en Linu
     - `syscall` en **x86_64 (64 bits)**.
     - `svc 0` en **ARM**.
 
-- **`E_S_fichero.c`**: Programa en C que demuestra las diferencias en el **buffering** entre llamadas al sistema (`read()`, `write()`) y llamadas a funciones de la biblioteca estándar (`fwrite()`, `fread()`).
+- **`E_S_fichero.c`**: Programa en C que demuestra las diferencias en el **buffering** entre llamadas al sistema (`read()`, `write()`) y llamadas a funciones de la biblioteca estándar de C (`fwrite()`, `fread()`).
 
   - Escribe datos en un archivo usando `fwrite()`.
   - Lee datos usando `fread()` y luego usa `read()` de `unistd.h`.
