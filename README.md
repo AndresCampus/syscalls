@@ -36,7 +36,7 @@ Si lo prefieres puedes compilar cada programa manualmente con gcc, ver sección 
 Comprueba la salida de ambos programas (si no tienes x86_64 puede que sólo tengas un ejecutable), deberían verse 4 mensajes que usan la escritura en fichero (salida estándar), pero con diferentes métodos:
   - `printf()` de la biblioteca estándar de C.
   - `write()` de `unistd.h`, un envoltorio de la librería de C para la llamada al sistema write().
-  - `syscall(SYS_write, ...)`. La forma genérica de invocar a cualquier llamada al sistema.
+  - `syscall(SYS_write, ...)`. La forma genérica de invocar a cualquier llamada al sistema, se puese usar cuando no hay un envoltorio C para la llamada concreta al sistema.
   - Por último llamadas directas en ensamblador, con la versión adecuada para la arquitectura en uso:
     - `int 0x80` en **x86 (32 bits)**.
     - `syscall` en **x86_64 (64 bits)**.
