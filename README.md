@@ -47,7 +47,7 @@ Comprueba si se ejectutan correctamente las cuatro opciones, revisa el código f
 Ejecuta los programas ahora con `strace` para comprobar si se llama a la llamada al sistema `write()` con las cuatro opciones (revisa la [sección sobre strace](https://github.com/AndresCampus/syscalls/blob/main/README.md#interpretar-salida-de-strace) al final del documento). Para ver mejor la salida de strace se puede ejecutar enviando la salida estándar a un fichero y así que no se mezclen en la consola:
 ```sh
 strace ./poker_llamadas
-strace ./poker_llamadas 1> salida.txt
+strace ./poker_llamadas > salida.txt
 ```
 ¿Por qué podría haber alguna diferencia entre la salida que da `./poker_llamadas` por consola y la que se obtiene si se redirige esta salida a un fichero `./poker_llamadas > salida.txt` ?
 
