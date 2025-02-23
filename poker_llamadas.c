@@ -18,7 +18,7 @@ struct utsname buf;
 uname(&buf);
     
 /*Pinta por pantalla usando la librería de C stdio.h*/
-printf("Salida printf() desde C. syscall write # %d, ISA: %s, binario %zu bits\n",SYS_write, buf.machine,sizeof(void*) * 8);
+printf("Salida printf() desde C [syscall write # %d, ISA: %s, binario %zu bits]\n",SYS_write, buf.machine,sizeof(void*) * 8);
 
 /* para hacer flush:  fflush(stdout); */
 
