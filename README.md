@@ -29,7 +29,7 @@ El fichero Makefile establece reglas para generar los ejecutables que tienen en 
 ```sh
 make
 ```
-Si lo prefieres puedes compilar cada programa manualmente con gcc, ver sección al final del documento.
+Si lo prefieres puedes compilar cada programa manualmente con gcc, ver [sección al final](https://github.com/AndresCampus/syscalls/blob/main/README.md#compilaci%C3%B3n-manual) del documento.
 
 ## Ejecución y análisis de poker_llamadas y poker_llamadas_32
 
